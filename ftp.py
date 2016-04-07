@@ -63,12 +63,12 @@ def patternGenerator(user_input):
 		for channel in dictData.project_pattern[project]:
 			#print channel
 			pattern = re.compile(dictData.project_pattern[project][channel]['re1']+
-					     dictData.project_pattern[project][channel]['re2']+
-					     dictData.project_pattern[project][channel]['re3']+
-					     dictData.project_pattern[project][channel]['re4']+
-					     dictData.project_pattern[project][channel]['re5']+
-					     dictData.project_pattern[project][channel]['re6']+
-					     dictData.project_pattern[project][channel]['re7'],re.IGNORECASE|re.DOTALL)
+                                     dictData.project_pattern[project][channel]['re2']+
+                                     dictData.project_pattern[project][channel]['re3']+
+                                     dictData.project_pattern[project][channel]['re4']+
+                                     dictData.project_pattern[project][channel]['re5']+
+                                     dictData.project_pattern[project][channel]['re6']+
+                                     dictData.project_pattern[project][channel]['re7'],re.IGNORECASE|re.DOTALL)
 			if pattern.search(user_input):
 				label = channel
 				channel_number = pattern.search(user_input).group(5).strip()
@@ -96,6 +96,7 @@ def fileDownload(inquiry_path, input_channel_number, server, user, password):
 	download_ftp.login(user, password)
 	print '\n', WELCOME_MESSAGE 
 
+        print(inquiry_path)
 	look_up_list = inquiry_ftp.listdir(inquiry_path) 
 	for single in look_up_list:
 		if input_channel_number in single[:20]:
@@ -197,14 +198,16 @@ def main():
 			else:
 				fileDownload(inquiry_path, input_channel_number, server, user, password)
 			user_command  = raw_input("Download complete! \nPress 'ENTER' to quit, or 'ANY KEY+ENTER' to continue: ")
+                except IndexError:
+                    pass
 		#except ftputil.ftp_error.PermanentError, ftputil.ftp_error.FTPOSError:
-		except ftputil.ftp_error.PermanentError: 
-			user_command = False
-			raw_input('\nWarning: Failed to communicate with FTP server!!!\
-				Server address, user name or password might be wrong.\
-				Press Enter to quit then Check the "user_config.db" file.')
+		# except ftputil.ftp_error.PermanentError: 
+		# 	user_command = False
+		# 	raw_input('\nWarning: Failed to communicate with FTP server!!!\
+		# 		Server address, user name or password might be wrong.\
+		# 		Press Enter to quit then Check the "user_config.db" file.')
 
-			sys.exit()
+		# 	sys.exit()
 		#user_command  = raw_input("Download complete! \nPress 'ENTER' to quit, or 'ANY KEY+ENTER' to continue: ")
 		if user_command:
 			go_ahead = True
